@@ -10,6 +10,7 @@ class ispconfig_proftpd::params {
   $root_dir               = '/etc/proftpd'
   $conf_file              = "${root_dir}/proftpd.conf"
   $vhosts_file            = "${root_dir}/vhosts.conf"
+  $ispconfig_file         = '/etc/proftpd_ispconfig.conf'
   $conf_link              = '/etc/proftpd.conf'
   $tls_conf               = "${root_dir}/tls.conf"
   $ipv6                   = 'off'

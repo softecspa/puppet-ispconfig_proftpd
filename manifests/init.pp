@@ -7,6 +7,7 @@ class ispconfig_proftpd (
   $ipv6                   = params_lookup( 'ipv6' ),
   $conf_file              = params_lookup( 'conf_file' ),
   $vhosts_file            = params_lookup( 'vhosts_file' ),
+  $ispconfig_file         = params_lookup( 'ispconfig_file' ),
   $conf_link              = params_lookup( 'conf_link' ),
   $tls_conf               = params_lookup( 'tls_conf' ),
   $logrotate_olddir_owner = params_lookup( 'logrotate_olddir_owner' ),
@@ -136,9 +137,11 @@ class ispconfig_proftpd (
 
   # VIRTUALHOST CREATION
   if ( $public_interface != undef ) or ( $private_interface != undef ) {
-    $ensure_include_vhost = 'present'
+    $ensure_include_vhost     = 'present'
+    $ensure_include_ispconfig = 'absent'
   } else {
-    $ensure_include_vhost = 'absent'
+    $ensure_include_vhost     = 'absent'
+    $ensure_include_ispconfig = 'present'
   }
 
   file_line {'include_vhost':
@@ -148,8 +151,16 @@ class ispconfig_proftpd (
     match   => "^Include ${ispconfig_proftpd::vhosts_file}"
   }
 
+  file_line {'include_ispconfig':
+    ensure  => $ensure_include_ispconfig,
+    path    => $ispconfig_proftpd::conf_file,
+    line    => "Include ${ispconfig_proftpd::ispconfig_file}",
+    match   => "^Include ${ispconfig_proftpd::ispconfig_file}"
+  }
+
   if $ensure_include_vhost == 'present' {
 
+    #BYPASS ispconfig file
     if $public_interface != undef {
       $public_ftp_address = inline_template("<%= ipaddress_${public_interface} %>")
       ispconfig_proftpd::vhost { $public_ftp_address : }
@@ -176,6 +187,14 @@ class ispconfig_proftpd (
       group   => 'root',
       mode    => '0644',
       require => Concat_build['proftpd_vhosts']
+    }
+  } else {
+    #USE ispconfig file
+    file {$ispconfig_proftpd::ispconfig_file:
+      ensure  => present,
+      mode  => '0644',
+      owner => 'root',
+      group => 'root',
     }
   }
 
