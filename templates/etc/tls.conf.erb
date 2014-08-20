@@ -1,0 +1,34 @@
+# Generated with puppet modules/ispconfig_proftpd/files/tls.conf
+
+<IfModule mod_tls.c>
+    <global>
+    TLSEngine on
+    TLSLog /var/log/proftpd/tls.log
+    </global>
+
+    # Support both SSLv3 and TLSv1
+    TLSProtocol SSLv3 TLSv1
+
+    <global>
+    # Are clients required to use FTP over TLS when talking to this server?
+    TLSRequired off
+
+    # Server's certificate
+    TLSRSACertificateFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('proftpd::ssl_domain') %>/sslcert.crt
+    TLSRSACertificateKeyFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('proftpd::ssl_domain') %>/sslkey.key
+
+    # CA the server trusts
+    TLSCACertificateFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('proftpd::ssl_domain') %>/cacert.crt
+    TLSCertificateChainFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('proftpd::ssl_domain') %>/cacert.crt
+
+    # Authenticate clients that want to use FTP over TLS?
+    TLSVerifyClient off
+
+    # Allow SSL/TLS renegotiations when the client requests them, but
+    # do not force the renegotations.  Some clients do not support
+    # SSL/TLS renegotiations; when mod_tls forces a renegotiation, these
+    # clients will close the data connection, or there will be a timeout
+    # on an idle data connection.
+    TLSRenegotiate required on
+    </global>
+</IfModule>
