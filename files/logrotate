@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# cron script to rotate the proftpd server logfile, based on the
+# wu-ftpd script by Peter Tobias <tobias@et-inf.fho-emden.de>.
+
+[ -x /usr/sbin/ftpstats ] || exit 0
+
+cd /var/log/proftpd
+savelog -q -u root -g adm -m 640 -c 12 /var/log/proftpd/xferreport 
+ftpstats -a -r -l 2 -d 2>/dev/null >/var/log/proftpd/xferreport
+savelog -q -u root -g adm -m 640 -c 7 /var/log/proftpd/xferlog 
+savelog -q -u root -g adm -m 640 -c 210 /var/log/proftpd/proftpd.log
+savelog -q -u root -g adm -m 640 -c 210 /var/log/proftpd/controls.log
+# reload could be not sufficient for all logs, a restart is safer
+/usr/sbin/invoke-rc.d proftpd restart 2>/dev/null >/dev/null || true

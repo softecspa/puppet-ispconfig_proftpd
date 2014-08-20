@@ -1,0 +1,16 @@
+<VirtualHost <%= vhost_listen_address %>>
+    DefaultRoot             ~
+    AllowOverwrite          on
+    Umask                   002 002
+    IdentLookups            off
+    PassivePorts            49100 50000
+    ServerIdent             on "ftp.<%= cluster -%>.<%= clusterdomain %>"
+    MasqueradeAddress       ftp.<%= cluster -%>.<%= clusterdomain %>
+    RequireValidShell       off
+    CapabilitiesEngine      off
+    <Directory ~>
+        UserOwner www-data
+    </Directory>
+</VirtualHost>
+
+
