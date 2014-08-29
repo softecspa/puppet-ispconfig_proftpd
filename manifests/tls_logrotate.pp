@@ -11,7 +11,7 @@ class ispconfig_proftpd::tls_logrotate (
   $logrotate_archive,
 ){
 
-  logrotate::file { "proftpd-tls":
+  logrotate::file { 'proftpd-tls':
     log          => $logrotate_file,
     interval     => $logrotate_interval,
     rotation     => $logrotate_rotation,

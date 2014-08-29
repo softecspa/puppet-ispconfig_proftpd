@@ -110,7 +110,7 @@ class ispconfig_proftpd (
     include sslcert
 
     # pusha il file con le direttive per tls
-    file { "${ispconfig_proftpd::tls_conf}":
+    file { $ispconfig_proftpd::tls_conf:
       ensure  => present,
       mode    => '0644',
       content => template('ispconfig_proftpd/etc/tls.conf.erb'),
@@ -192,9 +192,9 @@ class ispconfig_proftpd (
     #USE ispconfig file
     file {$ispconfig_proftpd::ispconfig_file:
       ensure  => present,
-      mode  => '0644',
-      owner => 'root',
-      group => 'root',
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
     }
   }
 
@@ -216,13 +216,13 @@ class ispconfig_proftpd (
       }
     }
     default: {
-      augeas { "logrotate_proftpd":
-        context => "/files/etc/logrotate.d/proftpd-basic",
+      augeas { 'logrotate_proftpd':
+        context => '/files/etc/logrotate.d/proftpd-basic',
         changes => [
           "set rule[1]/schedule ${ispconfig_proftpd::logrotate_interval}",
           "set rule[1]/rotate ${ispconfig_proftpd::logrotate_rotation}",
         ],
-        #require => Class["puppet"],
+        require => Class['puppet'],
       }
     }
   }
