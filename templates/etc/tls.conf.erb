@@ -14,12 +14,12 @@
     TLSRequired off
 
     # Server's certificate
-    TLSRSACertificateFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/sslcert.crt
-    TLSRSACertificateKeyFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/sslkey.key
+    TLSRSACertificateFile /etc/ssl/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/sslcert.crt
+    TLSRSACertificateKeyFile /etc/ssl/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/sslkey.key
 
     # CA the server trusts
-    TLSCACertificateFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/cacert.crt
-    TLSCertificateChainFile <%= scope.lookupvar('sslcert::ssl_path') %>/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/cacert.crt
+    TLSCACertificateFile /etc/ssl/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/cacert.crt
+    TLSCertificateChainFile /etc/ssl/<%= scope.lookupvar('ispconfig_proftpd::ssl_domain') %>/cacert.crt
 
     # Authenticate clients that want to use FTP over TLS?
     TLSVerifyClient off
