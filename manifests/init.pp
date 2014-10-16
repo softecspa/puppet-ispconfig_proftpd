@@ -107,7 +107,6 @@ class ispconfig_proftpd (
     }
 
     # questa include l'ho fatta anche all'interno della define sslcert::cert ma il valore non viene preso
-    include sslcert
 
     # pusha il file con le direttive per tls
     file { $ispconfig_proftpd::tls_conf:
