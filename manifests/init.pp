@@ -39,7 +39,9 @@ class ispconfig_proftpd (
     gid     => 'nogroup',
   } ->
 
-  class {'proftpd':}
+  class {'proftpd':
+    package => 'proftpd-basic'
+  }
 
   File_line {
     require => Package[$proftpd::package],
